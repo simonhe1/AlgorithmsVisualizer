@@ -6,11 +6,11 @@ const Rectangle = props => {
         display: 'inline-block',
         margin: '0 1px',
         height: `${height}px`,
-        backgroundColor: 'blue',
+        backgroundColor: 'pink',
     }
     
     return (
-        <div style={rectStyling}>
+        <div className="rectangle" style={rectStyling}>
         </div>
     );
 }
