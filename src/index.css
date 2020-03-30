@@ -14,14 +14,14 @@ code {
 
 .sortName {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 15px;
   font-size: 15px;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
   outline: none;
   color: #fff;
-  background-color: #4CAF50;
+  background-color: rgb(14, 209, 235);
   border: none;
   border-radius: 10px;
   box-shadow: 0 9px #999;
@@ -29,11 +29,29 @@ code {
 }
 
 .sortName:hover {
-  background-color: #3e8e41;
+  background-color: rgb(0, 193, 217);
 }
 
 .sortName:active {
-  background-color: #3e8e41;
+  background-color: rgb(0, 193, 217);
   box-shadow: 0 5px #666;
   transform: translateY(4px);
+}
+
+@media (min-width: 576px) {
+  .rectangle {
+    width: 5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .rectangle {
+    width: 5px;
+  }
+}
+
+@media (min-width: 992px) {
+  .rectangle {
+    width: 5px;
+  }
 }

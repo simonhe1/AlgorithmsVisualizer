@@ -5,22 +5,23 @@ import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 
 const SortingVisualizer = props => {
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    const RECT_COLOR_PRIMARY = 'pink';
+    const RECT_COLOR_SECONDARY = 'black';
+    const ANIMATION_SPEED = 1;
+    const BUTTON_SIZE = 15;
+
     const [rectangleElements,setRectangleElements] = useState([]);
-    const [numElements,setNumElements] = useState(100);
+    const minElementsAllowed = parseInt((windowWidth-200)/8);
+    const [numElements,setNumElements] = useState(minElementsAllowed);
+    const [running,setRunning] = useState(false);
 
     useEffect(() => {
         generateArray();
     },[])
 
-    const windowHeight = window.innerHeight;
-    const windowWidth = window.innerWidth;
-    const RECT_COLOR_PRIMARY = 'black';
-    const RECT_COLOR_SECONDARY = 'green';
-    const ANIMATION_SPEED = 1;
-    const BUTTON_SIZE = 15;
-
-    const [running,setRunning] = useState(false);
-    const [RECT_WIDTH,SET_RECT_WIDTH] = useState(Math.floor(windowWidth/numElements)-1.5);
+    const [RECT_WIDTH,SET_RECT_WIDTH] = useState(Math.floor(windowWidth/(numElements*1.5)));
 
     const containerStyling = {
         textAlign: 'center',
@@ -29,9 +30,8 @@ const SortingVisualizer = props => {
     const generateArray = () => {
         const arr = [];
         for(let i = 0;i<numElements;i++){
-            arr.push(randomNumber(5,windowHeight - BUTTON_SIZE*3));
+            arr.push(randomNumber(5,windowHeight - BUTTON_SIZE*5));
         }
-        console.log(arr)
         setRectangleElements(arr);
     }
 
@@ -67,20 +67,16 @@ const SortingVisualizer = props => {
     }
 
     const updateNumElements = (event,value) => {
-        setNumElements(value);
-        SET_RECT_WIDTH(Math.floor(windowWidth/value)-1.5)
+        if(value !== numElements){
+            SET_RECT_WIDTH(Math.floor(windowWidth/(value*1.5)))
+            setNumElements(value);
+            generateArray();
+        }
     }
 
     return (
         <div style={containerStyling}>
-            {rectangleElements.map((val,index) => (
-                <Rectangle 
-                    height={val}
-                    width={RECT_WIDTH}
-                    key={index}
-                />
-            ))}
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
                 <Grid item>
                     <button className="sortName" onClick={e => bubbleSort()}>Bubble Sort</button>
                 </Grid>
@@ -88,12 +84,21 @@ const SortingVisualizer = props => {
                     <button className="sortName" >Selection Sort</button>                
                 </Grid>
                 <Grid item xs>
-                    <Slider value={numElements} min={100} max={300} onChange={(e,v) => updateNumElements(e,v)} valueLabelDisplay="on" />
+                    <Slider value={numElements} min={minElementsAllowed} max={250} onChange={(e,v) => updateNumElements(e,v)} />
                 </Grid>
                 <Grid item>
                     <button className="sortName" >Insertion Sort</button>
                 </Grid>
             </Grid>
+            <div className="rectangle-container">
+                {rectangleElements.map((val,index) => (
+                    <Rectangle 
+                        height={val}
+                        width={RECT_WIDTH}
+                        key={index}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
