@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import Rectangle from './Rectangle';
 import { getBubbleSortAnimations } from './Sorts/BubbleSort';
+import { getSelectionSortAnimations } from './Sorts/SelectionSort';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 
@@ -38,8 +39,8 @@ const SortingVisualizer = props => {
     const bubbleSort = () => {
         let animations = getBubbleSortAnimations(rectangleElements);
         for(let i=0;i<animations.length;i++){
+            const rectangles = document.getElementsByClassName('rectangle');
             setTimeout(() => {
-                const rectangles = document.getElementsByClassName('rectangle');
                 const [rectOneIndex, rectTwoIndex] = animations[i];
                 const changeColor = i%3 !== 2;               
                 const color = i%3 === 0 ? RECT_COLOR_SECONDARY : RECT_COLOR_PRIMARY;
@@ -62,6 +63,10 @@ const SortingVisualizer = props => {
         }
     }
 
+    const selectionSort = () => {
+        let animations = getSelectionSortAnimations(rectangleElements);
+    }
+
     const randomNumber = (min,max) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
@@ -81,7 +86,7 @@ const SortingVisualizer = props => {
                     <button className="sortName" onClick={e => bubbleSort()}>Bubble Sort</button>
                 </Grid>
                 <Grid item>
-                    <button className="sortName" >Selection Sort</button>                
+                    <button className="sortName" onClick={e => selectionSort()}>Selection Sort</button>                
                 </Grid>
                 <Grid item xs>
                     <Slider value={numElements} min={minElementsAllowed} max={250} onChange={(e,v) => updateNumElements(e,v)} />
