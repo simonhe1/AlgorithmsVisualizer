@@ -21,10 +21,10 @@ const bubbleSort = (array, animations) => {
     const len = array.length;
     for(let i=0;i<len;i++){
         for(let j=0;j<len-i-1;j++){
-            // Push i,j once to highlight i and j are being compared
-            animations.push([i,j]);
-            // Push i,j a second time to set i and j to default color
-            animations.push([i,j]);
+            // Push j,j+1 once to highlight they are being compared
+            animations.push([j,j+1]);
+            // Push j,j+1 a second time to set them back to default color
+            animations.push([j,j+1]);
             if(array[j] > array[j+1]){
                 // Push j and j+1 to tell the program to switch the values
                 animations.push([j,j+1]);

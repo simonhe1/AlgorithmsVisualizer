@@ -10,7 +10,7 @@ const SortingVisualizer = props => {
     const windowWidth = window.innerWidth;
     const RECT_COLOR_PRIMARY = 'pink';
     const RECT_COLOR_SECONDARY = 'black';
-    const ANIMATION_SPEED = 1;
+    const ANIMATION_SPEED = 10;
     const BUTTON_SIZE = 15;
 
     const [rectangleElements,setRectangleElements] = useState([]);
@@ -57,6 +57,9 @@ const SortingVisualizer = props => {
                         const height2 = rectTwoStyle.height;
                         rectOneStyle.height = height2;
                         rectTwoStyle.height = height1;
+
+                        rectOneStyle.backgroundColor = RECT_COLOR_PRIMARY;
+                        rectTwoStyle.backgroundColor = RECT_COLOR_SECONDARY;
                     }
                 }
             }, i * ANIMATION_SPEED);
@@ -65,6 +68,41 @@ const SortingVisualizer = props => {
 
     const selectionSort = () => {
         let animations = getSelectionSortAnimations(rectangleElements);
+        for(let i=0;i<animations.length;i++){
+            const rectangles = document.getElementsByClassName('rectangle');
+            if(i === 10) break;
+            setTimeout(() => {
+                const [rectOneIndex, rectTwoIndex] = animations[i];
+                console.log(rectOneIndex,rectTwoIndex);
+                const changeColor = i%5 !== 4;
+                const color = i%5 === 0 ? RECT_COLOR_SECONDARY : RECT_COLOR_PRIMARY;
+                if(changeColor){
+                    if(!(rectOneIndex === -1 || rectTwoIndex === -1)){
+                        const rectOneStyle = rectangles[rectOneIndex].style;
+                        const rectTwoStyle = rectangles[rectTwoIndex].style;
+                        // If first 2 steps which is highlight and un-highlight
+                        if(i%5 < 2){
+                            rectOneStyle.backgroundColor = color;
+                            rectTwoStyle.backgroundColor = color;
+                        }else if(i%5 === 2){
+                            rectOneStyle.backgroundColor = RECT_COLOR_PRIMARY;
+                        }else{
+                            rectOneStyle.backgroundColor = RECT_COLOR_SECONDARY;
+                        }
+                    }
+                }else{
+                    const rectOneStyle = rectangles[rectOneIndex].style;
+                    const rectTwoStyle = rectangles[rectTwoIndex].style;
+                    const height1 = rectOneStyle.height;
+                    const height2 = rectTwoStyle.height;
+                    rectOneStyle.height = height2;
+                    rectTwoStyle.height = height1;
+
+                    rectOneStyle.backgroundColor = RECT_COLOR_PRIMARY;
+                    rectTwoStyle.backgroundColor = RECT_COLOR_SECONDARY;
+                }
+            }, i * ANIMATION_SPEED);
+        }
     }
 
     const randomNumber = (min,max) => {
