@@ -68,26 +68,29 @@ const SortingVisualizer = props => {
 
     const selectionSort = () => {
         let animations = getSelectionSortAnimations(rectangleElements);
+        // j is used to keep track of outer loop to keep i in check
+        let j = 0;
         for(let i=0;i<animations.length;i++){
             const rectangles = document.getElementsByClassName('rectangle');
-            if(i === 10) break;
             setTimeout(() => {
-                const [rectOneIndex, rectTwoIndex] = animations[i];
-                console.log(rectOneIndex,rectTwoIndex);
-                const changeColor = i%5 !== 4;
-                const color = i%5 === 0 ? RECT_COLOR_SECONDARY : RECT_COLOR_PRIMARY;
-                if(changeColor){
-                    if(!(rectOneIndex === -1 || rectTwoIndex === -1)){
+                const [pass,rectOneIndex, rectTwoIndex] = animations[i];
+                if(pass === 'inner'){
+                    // Only 4 passes inside inner loop
+                    // 1st pass represents highlight the 2 indexes we're working with
+                    // 2nd pass unhighlights the 2 indexes
+                    // 3rd pass unhighlights the min index if we found a new min index
+                    // 4th pass highlights new min index if there is
+                    const changeColor = !(rectOneIndex === -1 || rectTwoIndex === -1);
+                    if(changeColor){
                         const rectOneStyle = rectangles[rectOneIndex].style;
                         const rectTwoStyle = rectangles[rectTwoIndex].style;
-                        // If first 2 steps which is highlight and un-highlight
-                        if(i%5 < 2){
-                            rectOneStyle.backgroundColor = color;
-                            rectTwoStyle.backgroundColor = color;
-                        }else if(i%5 === 2){
-                            rectOneStyle.backgroundColor = RECT_COLOR_PRIMARY;
-                        }else{
+                        // 1st and 4th pass
+                        if((i+j)%4 === 0 || (i+j)%4 === 3){
                             rectOneStyle.backgroundColor = RECT_COLOR_SECONDARY;
+                            rectTwoStyle.backgroundColor = RECT_COLOR_SECONDARY;
+                        }else{
+                            rectOneStyle.backgroundColor = RECT_COLOR_PRIMARY;
+                            rectTwoStyle.backgroundColor = RECT_COLOR_PRIMARY;
                         }
                     }
                 }else{
@@ -99,7 +102,8 @@ const SortingVisualizer = props => {
                     rectTwoStyle.height = height1;
 
                     rectOneStyle.backgroundColor = RECT_COLOR_PRIMARY;
-                    rectTwoStyle.backgroundColor = RECT_COLOR_SECONDARY;
+                    rectTwoStyle.backgroundColor = RECT_COLOR_PRIMARY;
+                    j+=3;
                 }
             }, i * ANIMATION_SPEED);
         }
