@@ -23,10 +23,22 @@ const insertionSort = (array,animations) => {
     for(let i=1;i<length;i++){
         let valToInsert = array[i];
         let j = i-1;
+        // Push once to highlight comparison
+        animations.push(['outter',j,i]);
+        // Push second time to unhighlight
+        animations.push(['outter',j,i]);
         while(j >= 0 && valToInsert < array[j]){
+            // Highlight compared values
+            animations.push(['inner',j,j+1]);
+            // Unhighlight compared values
+            animations.push(['inner',j,j+1]);
+            // Switch values
+            animations.push(['inner',j,j+1]);
             array[j+1] = array[j];
             j--;
         }
         array[j+1] = valToInsert;
+        // Third iteration will insert value into correct position
+        animations.push(['outter',j+1,valToInsert]);
     }
 }

@@ -11,7 +11,7 @@ const SortingVisualizer = props => {
     const windowWidth = window.innerWidth;
     const RECT_COLOR_PRIMARY = 'pink';
     const RECT_COLOR_SECONDARY = 'black';
-    const ANIMATION_SPEED = 10;
+    const ANIMATION_SPEED = 5;
     const BUTTON_SIZE = 15;
 
     const [rectangleElements,setRectangleElements] = useState([]);
@@ -74,7 +74,7 @@ const SortingVisualizer = props => {
         for(let i=0;i<animations.length;i++){
             const rectangles = document.getElementsByClassName('rectangle');
             setTimeout(() => {
-                const [pass,rectOneIndex, rectTwoIndex] = animations[i];
+                const [pass, rectOneIndex, rectTwoIndex] = animations[i];
                 if(pass === 'inner'){
                     // Only 4 passes inside inner loop
                     // 1st pass represents highlight the 2 indexes we're working with
@@ -112,6 +112,47 @@ const SortingVisualizer = props => {
 
     const insertionSort = () => {
         let animations = getInsertionSortAnimations(rectangleElements);
+        // j is used to keep track of outer loop to keep i in check
+        let j = 0;
+        for(let i=0;i<animations.length;i++){
+            const rectangles = document.getElementsByClassName('rectangle');
+            setTimeout(() => {
+                const[pass, rectOneIndex, rectTwoIndex] = animations[i];
+                const changeColor = (i+j)%3 !== 2;
+                const color = (i+j)%3 === 0 ? RECT_COLOR_SECONDARY : RECT_COLOR_PRIMARY;
+                if(pass === 'inner'){
+                    const rectOneStyle = rectangles[rectOneIndex].style;
+                    const rectTwoStyle = rectangles[rectTwoIndex].style;    
+                    if(changeColor){
+                        rectOneStyle.backgroundColor = color;
+                        rectTwoStyle.backgroundColor = color;
+                    }else{
+                        const height1 = rectOneStyle.height;
+                        const height2 = rectTwoStyle.height;
+                        rectOneStyle.height = height2;
+                        rectTwoStyle.height = height1;
+                    }
+                }else{
+                    if(changeColor){
+                        const rectOneStyle = rectangles[rectOneIndex].style;
+                        const rectTwoStyle = rectangles[rectTwoIndex].style;
+                        rectOneStyle.backgroundColor = color;
+                        rectTwoStyle.backgroundColor = color;
+                        j++;
+                    }else{
+                        // Instead of swapping index with another rectangle
+                        // Will just make the index with the given height
+ 
+                        const rectOneStyle = rectangles[rectOneIndex].style;
+                        // Although name is rectTwoIndex, since it's outer loop,
+                        // it's actually the height of the value we're trying to insert
+                        const height = rectTwoIndex;
+                        rectOneStyle.height = height;
+                        j+=2;
+                    }
+                }
+            }, i * ANIMATION_SPEED);
+        }
     }
 
     const randomNumber = (min,max) => {
