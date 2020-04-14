@@ -3,6 +3,7 @@ import Rectangle from './Rectangle';
 import { getBubbleSortAnimations } from './Sorts/BubbleSort';
 import { getSelectionSortAnimations } from './Sorts/SelectionSort';
 import { getInsertionSortAnimations } from './Sorts/InsertionSort';
+import { getMergeSortAnimations } from './Sorts/MergeSort';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 
@@ -155,6 +156,10 @@ const SortingVisualizer = props => {
         }
     }
 
+    const mergeSort = () => {
+        const animations = getMergeSortAnimations(rectangleElements);
+    }
+
     const randomNumber = (min,max) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
@@ -181,6 +186,9 @@ const SortingVisualizer = props => {
                 </Grid>
                 <Grid item>
                     <button className="sortName" onClick={e => insertionSort()}>Insertion Sort</button>
+                </Grid>
+                <Grid item>
+                    <button className="sortName" onClick={e => mergeSort()}>Merge Sort</button>
                 </Grid>
             </Grid>
             <div className="rectangle-container">
