@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Rectangle from './Rectangle';
 import { getBubbleSortAnimations } from './Sorts/BubbleSort';
 import { getSelectionSortAnimations } from './Sorts/SelectionSort';
@@ -19,10 +19,19 @@ const SortingVisualizer = props => {
     const minElementsAllowed = parseInt((windowWidth-200)/8);
     const [numElements,setNumElements] = useState(minElementsAllowed);
     const [running,setRunning] = useState(false);
+    const [windowDimensions,setWindowDimensions] = useState({
+        height: window.innerHeight,
+        width: window.innerWidth,
+    })
 
     useEffect(() => {
         generateArray();
-    },[])
+    },[windowDimensions]);
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    },[]);
 
     const [RECT_WIDTH,SET_RECT_WIDTH] = useState(Math.floor(windowWidth/(numElements*1.5)));
 
@@ -30,10 +39,18 @@ const SortingVisualizer = props => {
         textAlign: 'center',
     }
 
+    const handleResize = () =>{
+        setWindowDimensions({
+            height: window.innerHeight,
+            width: window.innerWidth,
+        });
+        SET_RECT_WIDTH(Math.floor(window.innerWidth/(numElements*1.5)))
+    }
+
     const generateArray = () => {
         const arr = [];
         for(let i = 0;i<numElements;i++){
-            arr.push(randomNumber(5,windowHeight - BUTTON_SIZE*5));
+            arr.push(randomNumber(5,windowDimensions.height - BUTTON_SIZE*5));
         }
         setRectangleElements(arr);
     }
@@ -166,7 +183,7 @@ const SortingVisualizer = props => {
 
     const updateNumElements = (event,value) => {
         if(value !== numElements){
-            SET_RECT_WIDTH(Math.floor(windowWidth/(value*1.5)))
+            SET_RECT_WIDTH(Math.floor(windowDimensions.width/(value*1.5)))
             setNumElements(value);
             generateArray();
         }

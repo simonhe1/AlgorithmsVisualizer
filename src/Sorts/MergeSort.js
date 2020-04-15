@@ -43,6 +43,7 @@ const mergeSort = (array,animations) => {
 
         // Merge left and right array
         while(leftArrayPointer < left.length && rightArrayPointer < right.length){
+            console.log('main pointer:',mainPointer);
             if(left[leftArrayPointer] < right[rightArrayPointer]){
                 array[mainPointer] = left[leftArrayPointer];
                 leftArrayPointer++;
@@ -55,11 +56,13 @@ const mergeSort = (array,animations) => {
 
         // Checks whether there's still elements remaining in left array and right array
         while(leftArrayPointer < left.length){
+            console.log('main pointer:',mainPointer);
             array[mainPointer] = left[leftArrayPointer];
             leftArrayPointer++;
             mainPointer++;
         }
         while(rightArrayPointer < right.length){
+            console.log('main pointer:',mainPointer);
             array[mainPointer] = right[rightArrayPointer];
             rightArrayPointer++;
             mainPointer++;
