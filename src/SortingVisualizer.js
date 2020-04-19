@@ -135,7 +135,7 @@ const SortingVisualizer = props => {
         for(let i=0;i<animations.length;i++){
             const rectangles = document.getElementsByClassName('rectangle');
             setTimeout(() => {
-                const[pass, rectOneIndex, rectTwoIndex] = animations[i];
+                const [pass, rectOneIndex, rectTwoIndex] = animations[i];
                 const changeColor = (i+j)%3 !== 2;
                 const color = (i+j)%3 === 0 ? RECT_COLOR_SECONDARY : RECT_COLOR_PRIMARY;
                 if(pass === 'inner'){
@@ -175,6 +175,23 @@ const SortingVisualizer = props => {
 
     const mergeSort = () => {
         const animations = getMergeSortAnimations(rectangleElements);
+        let j = 0;
+        for(let i=0;i<animations.length;i++){
+            const rectangles = document.getElementsByClassName('rectangle');
+            setTimeout(() => {
+                const [pass, index, value] = animations[i];
+                const color = j % 2 == 0 ? RECT_COLOR_SECONDARY : RECT_COLOR_SECONDARY;
+                if(pass === 'inner'){
+                    const rectStyle = rectangles[index].style;
+                    rectStyle.height = value;
+                }else{
+                    const rectStyle = rectangles[index].style;
+                    rectStyle.backgroundColor = color;
+                    j++;
+                }
+
+            }, i * ANIMATION_SPEED);
+        }
     }
 
     const randomNumber = (min,max) => {

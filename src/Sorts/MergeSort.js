@@ -43,12 +43,20 @@ const mergeSort = (array,animations) => {
 
         // Merge left and right array
         while(leftArrayPointer < left.length && rightArrayPointer < right.length){
-            console.log('main pointer:',mainPointer);
+            // console.log('main pointer:',mainPointer);
+            // Highlight index we're working on
+            animations.push(['outter',mainPointer,mainPointer]);
+            // Unhighlight index we're working on
+            animations.push(['outter',mainPointer,mainPointer]);
             if(left[leftArrayPointer] < right[rightArrayPointer]){
                 array[mainPointer] = left[leftArrayPointer];
+                // Change height of current index with the value of the left array
+                animations.push(['inner',mainPointer,left[leftArrayPointer]]);
                 leftArrayPointer++;
             }else{
                 array[mainPointer] = right[rightArrayPointer];
+                // Change height of current index with the value of the right array
+                animations.push(['inner',mainPointer,right[rightArrayPointer]]);
                 rightArrayPointer++;
             }
             mainPointer++;
@@ -56,13 +64,13 @@ const mergeSort = (array,animations) => {
 
         // Checks whether there's still elements remaining in left array and right array
         while(leftArrayPointer < left.length){
-            console.log('main pointer:',mainPointer);
+            // console.log('main pointer:',mainPointer);
             array[mainPointer] = left[leftArrayPointer];
             leftArrayPointer++;
             mainPointer++;
         }
         while(rightArrayPointer < right.length){
-            console.log('main pointer:',mainPointer);
+            // console.log('main pointer:',mainPointer);
             array[mainPointer] = right[rightArrayPointer];
             rightArrayPointer++;
             mainPointer++;
